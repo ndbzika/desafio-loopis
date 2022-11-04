@@ -22,3 +22,26 @@ h1{
 
 /*CABEÇALHO--------------------------------------------*/
 
+/*CORPO--------------------------------------------*/
+
+.caixas{
+    background-color: white;
+    border-radius: 10px;
+    width: 350px;
+    height: 500px;
+    margin-left: 60px;
+}
+
+#sessao{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.tit_caixa h2{
+    font-size: 30px;
+    color: #F8B195;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+}
