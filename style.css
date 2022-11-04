@@ -30,6 +30,7 @@ h1{
     width: 350px;
     height: 500px;
     margin-left: 60px;
+    overflow: auto;
 }
 
 #sessao{
@@ -44,4 +45,58 @@ h1{
     font-weight: bold;
     text-align: center;
     padding: 20px;
+}
+
+.camp_de_entrada{
+    padding: 20px;
+}
+
+.camp_de_entrada h3{
+    font-size: 22px;
+    font-weight: bold;
+    color: #F8B195;
+    margin-bottom: 10px;
+}
+
+.camp_de_entrada input{
+    width: 250px;
+    height: 30px;
+}
+
+#alinhamento_promocao{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items:center;
+    text-align: start;
+}
+
+#alinhamento_promocao input{
+    width: 40px;
+}
+
+#alinhamento_promocao label{
+    color: #F8B195;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 70px;
+}
+
+#botao_salvar{
+    width: 200px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: red;
+    text-align: center;
+    padding-top: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+#alinhamento_botao{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
