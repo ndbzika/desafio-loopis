@@ -18,12 +18,8 @@ Acesse o projeto [clicando aqui](https://ndbzika.github.io/desafio-loopis/)
 
 
 #### Equipe Foca
-~~~Antônio Lacerda
 [A. Lacerda's GitHub](https://github.com/AntLacerda)
-~~~
 
-~~~Flávio
 [Flávio's GitHub](https://github.com/ndbzika)
-~~~
 
 
