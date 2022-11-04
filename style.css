@@ -22,7 +22,7 @@ h1{
 
 /*CABEÇALHO--------------------------------------------*/
 
-/*CORPO--------------------------------------------*/
+/*CAIXA01--------------------------------------------*/
 
 .caixas{
     background-color: white;
@@ -99,4 +99,20 @@ h1{
     justify-content: center;
     align-items: center;
     margin-top: 20px;
+}
+
+/*CAIXA01--------------------------------------------*/
+
+/*CAIXA02--------------------------------------------*/
+
+.produtos{
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items:center;
+    background-color: #F8B195;
+    width: 320px;
+    height: 50px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
