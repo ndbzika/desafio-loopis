@@ -1,0 +1,24 @@
+/*CABEÇALHO--------------------------------------------*/
+
+#cabecalho{
+    text-align: center;
+    padding: 20px;
+}
+
+#cabecalho span{
+    color: red;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+h1{
+    font-weight: bold;
+    font-size: 30px;
+}
+
+#corpo{
+    background-image: url(backgrond.jpg);
+}
+
+/*CABEÇALHO--------------------------------------------*/
+
