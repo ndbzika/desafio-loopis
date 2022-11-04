@@ -4,7 +4,7 @@
 
 
 ## Resultado
-Acesse o projeto [clicando aqui](https://ndbzika.github.io/desafio-loopis/)
+Acesse o projeto clicando [aqui](https://ndbzika.github.io/desafio-loopis/)
 
 
 ### Linguagens ultilizadas
