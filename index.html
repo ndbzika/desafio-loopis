@@ -10,5 +10,44 @@
     <title>Loopis Food</title>
 </head>
 <body>
+    <header id="cabecalho">
+        <h1 id="logo">Loopis<span> Food</span></h1>
+    </header>
+    <main>
+        <section id="sessao">
+            <div class="caixas">
+                <div class="tit_caixa">
+                    <h2>Cadastro</h2>
+                </div>
+                <div class="camp_de_entrada">
+                    <h3>Nome do Prato</h3>
+                    <input type="text" placeholder="Ex: Smash Burguer" id="input_prato">
+                </div>
+                <div class="camp_de_entrada">
+                    <h3>Preço</h3>
+                    <input type="text" placeholder="Ex: R$ 18,00" id="input_preco">
+                </div>
+                <div class="camp_de_entrada">
+                    <h3>Promoção</h3>
+                    <div id="alinhamento_promocao">
+                        <input type="radio" name="promocao" id="botao_sim" value="Sim">
+                        <label for="botao_sim">Sim</label>
+                        <input type="radio" name="promocao" id="botao_nao" value="Não">
+                        <label for="botao_nao">Não</label>
+                    </div>
+                </div>
+                <div id="alinhamento_botao">
+                    <div id="botao_salvar">Salvar</div>
+                </div>
+            </div>
+            <div class="caixas">
+                <div class="tit_caixa">
+                    <h2>Produtos</h2>
+                </div>
+                <div id="produtos">
+
+                </div>
+            </div>
+        </section>
 </body>
 </html>
