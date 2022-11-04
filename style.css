@@ -115,11 +115,14 @@ h1{
     height: 50px;
     border-radius: 10px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-bottom: 15px;
 }
+
 .produto{
     display: flex;
     flex-direction: column;
 }
+
 .botao_remover{
     border-radius: 5px;
     border: none;
@@ -128,4 +131,18 @@ h1{
     width: 80px;
     height: 25px;
     cursor: pointer;
+}
+
+#em_promo{
+    background-color: #E4B056;
+}
+
+#secao_produtos{
+    overflow: auto;
+}
+
+.nome_da_comida,
+.valor_da_comida{
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
 }
