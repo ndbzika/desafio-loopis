@@ -16,17 +16,8 @@ const semPromo = document.querySelector("#botao_nao");
 //Selecionando lista de produtos
 const produtos = document.querySelector("#lista_produtos");
 
-
-let contadorNan = 0;
 //Evento de click no botão de salvar comida
 botaoSalvar.addEventListener("click", (e) => {
-    botaoSalvar.addEventListener("click", () => {
-        if(contadorNan>0){
-            divCadastro.removeChild(valorNan)
-            contadorNan = 0;
-        }
-    })
-
     //Armazenando o nome do prato e o preço
     let nomePrato = prato.value;
     let valorPreco = preco.value;
@@ -60,7 +51,13 @@ botaoSalvar.addEventListener("click", (e) => {
     valor.textContent = valorPreco;
     botaoRemover.textContent = "Remover"
 
-    if(!isNaN(Number(valorPreco)) | valorPreco === null){
+    let valorNan = document.createElement("p");
+    valorNan.textContent = `Valor informado inválido`;
+    valorNan.classList.add("valor_invalido");
+
+    let contadorNan = 0;
+
+    if(!isNaN(Number(valorPreco))){
         //Função que verifica se o produto está em promoção ou não
         estaEmPromo();
         
@@ -72,15 +69,38 @@ botaoSalvar.addEventListener("click", (e) => {
         nomeEpreco.appendChild(valor);
         item.appendChild(nomeEpreco);
         item.appendChild(botaoRemover);
-    }else if(isNaN(Number(valorPreco))){
-        let valorNan = document.createElement("p");
-        valorNan.textContent = `Valor informado inválido`;
-        valorNan.classList.add("valor_invalido");
-        divCadastro.appendChild(valorNan);
-        ++contadorNan;
-        console.log(contadorNan)
+
+    }else if(isNaN(Number(valorPreco)) | valorPreco === ""){
+        if(contadorNan === 0){
+            divCadastro.appendChild(valorNan);
+            ++contadorNan;
+        }else if(contadorNan>0){
+            divCadastro.removeChild(valorNan);
+                contadorNan = 0;
+        }
+        botaoSalvar.addEventListener("click", () => {
+            if(contadorNan > 0){
+                divCadastro.removeChild(valorNan);
+                contadorNan = 0;
+                console.log(contadorNan);
+            }
+        })
     }
 
+        //Função para verificar se o item está em promoçao ou não
+        function estaEmPromo(){
+            if(promo.checked){
+                //Se estiver em promoção diminua 20% do seu valor
+                valorPreco = `Preço: R$${Number(preco.value)-(20/100*Number(preco.value))}`;
+                produtos.appendChild(item);
+                item.id = "em_promo";
+            }else if(semPromo.checked){
+                //Se não, o valor continua o mesmo e adicione-o antes daqueles em promoção
+                valorPreco = `Preço: R$${valorPreco}`;
+                produtos.prepend(item);
+            }
+        }
+    
     //Função para inserir imagem
     function inserirImagem(){
         let img = document.createElement("img");
@@ -88,20 +108,5 @@ botaoSalvar.addEventListener("click", (e) => {
         img.width = 30;
         img.height = 30;
         item.appendChild(img);
-    }
-
-    //Função para verificar se o item está em promoçao ou não
-    function estaEmPromo(){
-        
-        if(promo.checked){
-            //Se estiver em promoção diminua 20% do seu valor
-            valorPreco = `Preço: R$${preco.value-(20/100*preco.value)}`;
-            produtos.appendChild(item);
-            item.id = "em_promo";
-        }else if(semPromo.checked){
-            //Se não, o valor continua o mesmo e adicione-o antes daqueles em promoção
-            valorPreco = `Preço: R$${valorPreco}`;
-            produtos.prepend(item);
-        }
     }
 })
