@@ -5,6 +5,10 @@ const botaoSalvar = document.querySelector("#botao_salvar");
 const prato = document.querySelector("#input_prato");
 const preco = document.querySelector("#input_preco");
 
+
+const divCadastro = document.querySelector("#cadastro")
+
+
 //Selecionando radio buttons com valores diferentes
 const promo = document.querySelector("#botao_sim");
 const semPromo = document.querySelector("#botao_nao");
@@ -12,8 +16,17 @@ const semPromo = document.querySelector("#botao_nao");
 //Selecionando lista de produtos
 const produtos = document.querySelector("#lista_produtos");
 
+
+let contadorNan = 0;
 //Evento de click no botão de salvar comida
 botaoSalvar.addEventListener("click", (e) => {
+    botaoSalvar.addEventListener("click", () => {
+        if(contadorNan>0){
+            divCadastro.removeChild(valorNan)
+            contadorNan = 0;
+        }
+    })
+
     //Armazenando o nome do prato e o preço
     let nomePrato = prato.value;
     let valorPreco = preco.value;
@@ -26,15 +39,13 @@ botaoSalvar.addEventListener("click", (e) => {
     const nomeEpreco = document.createElement("div");
     nomeEpreco.classList.add("produto");
 
-    //Gerando e colocando imagem na div
-    inserirImagem();
-
+    
     //Colocando nome do prato em um elemento p e o preço em um span
     let nome = document.createElement("p");
     nome.classList.add("nome_da_comida");
     let valor = document.createElement("span");
     valor.classList.add("valor_da_comida");
-
+    
     //Criando botão para remover item futuramente
     let botaoRemover = document.createElement("button");
     botaoRemover.classList.add("botao_remover");
@@ -43,20 +54,32 @@ botaoSalvar.addEventListener("click", (e) => {
     botaoRemover.addEventListener("click", () => {
         produtos.removeChild(item);
     })
-
-    //Função que verifica se o produto está em promoção ou não
-    estaEmPromo();
     
     //Atribuindo conteúdo para a div
     nome.textContent = nomePrato;
     valor.textContent = valorPreco;
     botaoRemover.textContent = "Remover"
 
-    //Adicionando conteúdos na div
-    nomeEpreco.appendChild(nome);
-    nomeEpreco.appendChild(valor);
-    item.appendChild(nomeEpreco);
-    item.appendChild(botaoRemover);
+    if(!isNaN(Number(valorPreco)) | valorPreco === null){
+        //Função que verifica se o produto está em promoção ou não
+        estaEmPromo();
+        
+        //Gerando e colocando imagem na div
+        inserirImagem();
+
+        //Adicionando conteúdos na div
+        nomeEpreco.appendChild(nome);
+        nomeEpreco.appendChild(valor);
+        item.appendChild(nomeEpreco);
+        item.appendChild(botaoRemover);
+    }else if(isNaN(Number(valorPreco))){
+        let valorNan = document.createElement("p");
+        valorNan.textContent = `Valor informado inválido`;
+        valorNan.classList.add("valor_invalido");
+        divCadastro.appendChild(valorNan);
+        ++contadorNan;
+        console.log(contadorNan)
+    }
 
     //Função para inserir imagem
     function inserirImagem(){
