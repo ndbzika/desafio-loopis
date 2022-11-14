@@ -46,10 +46,7 @@ botaoSalvar.addEventListener("click", (e) => {
         produtos.removeChild(item);
     })
     
-    //Atribuindo conteúdo para a div
-    nome.textContent = nomePrato;
-    valor.textContent = valorPreco;
-    botaoRemover.textContent = "Remover"
+
 
     let valorNan = document.createElement("p");
     valorNan.textContent = `Valor informado inválido`;
@@ -86,6 +83,10 @@ botaoSalvar.addEventListener("click", (e) => {
             }
         })
     }
+        //Atribuindo conteúdo para a div
+        nome.textContent = nomePrato;
+        valor.textContent = valorPreco;
+        botaoRemover.textContent = "Remover";
 
         //Função para verificar se o item está em promoçao ou não
         function estaEmPromo(){
