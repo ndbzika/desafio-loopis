@@ -8,6 +8,8 @@ const semPromo = document.querySelector("#botao_nao");
 //Campo responsável pela lista de produtos;
 const produtos = document.querySelector("#lista_produtos");
 
+const divCadastro = document.querySelector("#cadastro");
+
 //Arrays reponsáveis pelo localStorage;
 let listaPrato = [];
 let listaPreco = [];
@@ -44,79 +46,100 @@ const salvar = () => {
     criarElemento(prato, preco, itemPromocao);
 }
 
+//Contador e elemento para quando o valor do produto não for um número;
+let contadorNan = 0;
+let numeroNan = document.createElement("p");
+numeroNan.textContent = `Valor inválido`
+numeroNan.classList.add("numero_nan");
+
 const criarElemento = (prato, preco, promocao) => {
-    //Cria um item da lista e adiciona uma classe;
-    let item = document.createElement("li");
-    item.classList.add("produtos");
-
-    //Cria um container para o nome e preço além de adicionar uma classe;
-    let nomeEpreco = document.createElement("div");
-    nomeEpreco.classList.add("produto");
-
-    //Responsável por adicionar imagem do hamburguer; 
-    inserirImagem();
-
-    //Cria uma tag que receberá o nome do prato e adiciona uma classe;
-    let nome = document.createElement("p");
-    nome.classList.add("nome_da_comida");
-
-    //Cria uma tag que receberá o valor do prato e adiciona uma classe;
-    let valor = document.createElement("span");
-    valor.classList.add("valor_da_comida");
-
-    //Cria o botão de remover o container e adiciona uma classe;
-    let botaoRemover = document.createElement("button");
-    botaoRemover.classList.add("botao_remover");
-    botaoRemover.textContent = "remover";
-    
-    //Função responsável por inserir a imagem do hamburguer;
-    function inserirImagem(){
-        let img = document.createElement("img");
-        img.src = "hamburger.png";
-        img.width = 30;
-        img.height = 30;
-        item.appendChild(img);
-    }
-
-    //Remove itens do container e do localStorage;
-    botaoRemover.addEventListener("click", () => {
-        produtos.removeChild(item);
-        for(let k=0;k<listaPrato.length;k++){
-            if(listaPrato[k]===prato&&listaPreco[k]===preco){
-                console.log(k);
-                listaPrato.splice(k, 1);
-                listaPreco.splice(k, 1);
-                listaPromocao.splice(k, 1);
-                
-                localStorage.setItem("prato", listaPrato);
-                localStorage.setItem("preço", listaPreco);
-                localStorage.setItem("promocao", listaPromocao);
-            }
+    //Se o preço do prato não for NaN, faça a listagem e adicione o produto
+    if(!isNaN(Number(preco))){
+        //Cria um item da lista e adiciona uma classe;
+        let item = document.createElement("li");
+        item.classList.add("produtos");
+        //Cria um container para o nome e preço além de adicionar uma classe;
+        let nomeEpreco = document.createElement("div");
+        nomeEpreco.classList.add("produto");
+        //Responsável por adicionar imagem do hamburguer;
+        inserirImagem();
+        //Cria uma tag que receberá o nome do prato e adiciona uma classe;
+        let nome = document.createElement("p");
+        nome.classList.add("nome_da_comida");
+        //Cria uma tag que receberá o valor do prato e adiciona uma classe;
+        let valor = document.createElement("span");
+        valor.classList.add("valor_da_comida");
+        //Cria o botão de remover o container e adiciona uma classe;
+        let botaoRemover = document.createElement("button");
+        botaoRemover.classList.add("botao_remover");
+        botaoRemover.textContent = "remover";
+        
+        //Função responsável por inserir a imagem do hamburguer;
+        function inserirImagem(){
+            let img = document.createElement("img");
+            img.src = "hamburger.png";
+            img.width = 30;
+            img.height = 30;
+            item.appendChild(img);
         }
-    });
+        //Remove itens do container e do localStorage;
+        botaoRemover.addEventListener("click", () => {
+            produtos.removeChild(item);
+            for(let k=0;k<listaPrato.length;k++){
+                if(listaPrato[k]===prato&&listaPreco[k]===preco){
+                    console.log(k);
+                    listaPrato.splice(k, 1);
+                    listaPreco.splice(k, 1);
+                    listaPromocao.splice(k, 1);
+        
+                    localStorage.setItem("prato", listaPrato);
+                    localStorage.setItem("preço", listaPreco);
+                    localStorage.setItem("promocao", listaPromocao);
+                }
+            }
+        });
+        //Chamada da função que confere se há promoção ou não no produto;
+        if(promocao==1){
+            precoFinal = conferePromocao(promocao, preco);
+            item.id = "em_promo";
+            produtos.appendChild(item);
+        }
+        else if(promocao==2){
+            precoFinal = conferePromocao(promocao, preco);
+            produtos.prepend(item);
+        }
+        //Atribui o nome e o preço do prato;
+        nome.textContent = prato;
+        valor.textContent = precoFinal;
+        
+        //Adiciona os elementos ao container;
+        nomeEpreco.appendChild(nome);
+        nomeEpreco.appendChild(valor);
+        item.appendChild(nomeEpreco);
+        item.appendChild(botaoRemover);
 
-    //Chamada da função que confere se há promoção ou não no produto;
-    if(promocao==1){
-        precoFinal = conferePromocao(promocao, preco);
-        item.id = "em_promo";
-        produtos.appendChild(item);
-    }
-    else if(promocao==2){
-        precoFinal = conferePromocao(promocao, preco);
-        produtos.prepend(item);
-    }
+        contadorNan = 0;
 
-    //Atribui o nome e o preço do prato;
-    nome.textContent = prato;
-    valor.textContent = precoFinal;
     
-    //Adiciona os elementos ao container;
-    nomeEpreco.appendChild(nome);
-    nomeEpreco.appendChild(valor);
-    item.appendChild(nomeEpreco);
-    item.appendChild(botaoRemover);
+    
+    } else if(isNaN(Number(preco))){
+        //Se for NaN, mostre essa mensagem e não adicione nada;
+        if(contadorNan === 0){
+            divCadastro.appendChild(numeroNan);
+            contadorNan++;
+        } else if(contadorNan > 0){
+            divCadastro.removeChild(numeroNan);
+            contadorNan = 0;
+            
+        }
+    }
 }
-
+botaoSalvar.addEventListener("click", ()=>{
+    if(contadorNan>0){
+        divCadastro.removeChild(numeroNan);
+        contadorNan=0;
+    }
+})
 //Responsável por carregar os ítens armazenados dentro do localStorage;
 const carregarPagina = () =>{
     if(localStorage.getItem("prato")){
