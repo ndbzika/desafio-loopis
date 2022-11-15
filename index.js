@@ -1,64 +1,75 @@
-//Selecionando botão de salvar conteúdo
+//Botão para cadastrar um pedido;
 const botaoSalvar = document.querySelector("#botao_salvar");
 
-//Selecionando inputs do nome da comida e do preço
-const prato = document.querySelector("#input_prato");
-const preco = document.querySelector("#input_preco");
-
-//Selecionando radio buttons com valores diferentes
+//Botões para indicar promoção ou não;
 const promo = document.querySelector("#botao_sim");
 const semPromo = document.querySelector("#botao_nao");
 
-//Selecionando lista de produtos
+//Campo responsável pela lista de produtos;
 const produtos = document.querySelector("#lista_produtos");
 
-//Evento de click no botão de salvar comida
-botaoSalvar.addEventListener("click", (e) => {
-    //Armazenando o nome do prato e o preço
-    let nomePrato = prato.value;
-    let valorPreco = preco.value;
+//Arrays reponsáveis pelo localStorage;
+let listaPrato = [];
+let listaPreco = [];
+let listaPromocao = [];
 
-    //Criando elemento li e adicionando um classe ao mesmo
-    const item = document.createElement("li");
+//Variáveis auxiliáres;
+let itemPromocao;
+let precoFinal;
+
+const salvar = () => {
+    //Valores digitados pelo usuário;
+    let prato = document.querySelector("#input_prato").value;
+    let preco = Number(document.querySelector("#input_preco").value);
+
+    //Checagem de promoção;
+    if(promo.checked){
+        itemPromocao = 1;
+        listaPromocao.push(1);
+    }else if(semPromo.checked){
+        itemPromocao = 2;
+        listaPromocao.push(2);
+    }
+
+    //Adiciona valores aos arrays;
+    listaPrato.push(prato);
+    listaPreco.push(preco);
+
+    //Adiciona itens ao localStorage;
+    localStorage.setItem("prato", listaPrato);
+    localStorage.setItem("preço", listaPreco);
+    localStorage.setItem("promocao", listaPromocao);
+
+    //Chamada da função responsável por criar o elemento;
+    criarElemento(prato, preco, itemPromocao);
+}
+
+const criarElemento = (prato, preco, promocao) => {
+    //Cria um item da lista e adiciona uma classe;
+    let item = document.createElement("li");
     item.classList.add("produtos");
 
-    //Criando div do produto que será adicionado e atribuindo-a uma classe
-    const nomeEpreco = document.createElement("div");
+    //Cria um container para o nome e preço além de adicionar uma classe;
+    let nomeEpreco = document.createElement("div");
     nomeEpreco.classList.add("produto");
 
-    //Gerando e colocando imagem na div
+    //Responsável por adicionar imagem do hamburguer; 
     inserirImagem();
 
-    //Colocando nome do prato em um elemento p e o preço em um span
+    //Cria uma tag que receberá o nome do prato e adiciona uma classe;
     let nome = document.createElement("p");
     nome.classList.add("nome_da_comida");
+
+    //Cria uma tag que receberá o valor do prato e adiciona uma classe;
     let valor = document.createElement("span");
     valor.classList.add("valor_da_comida");
 
-    //Criando botão para remover item futuramente
+    //Cria o botão de remover o container e adiciona uma classe;
     let botaoRemover = document.createElement("button");
     botaoRemover.classList.add("botao_remover");
+    botaoRemover.textContent = "remover";
     
-    //Evento para remover div do produto
-    botaoRemover.addEventListener("click", () => {
-        produtos.removeChild(item);
-    })
-
-    //Função que verifica se o produto está em promoção ou não
-    estaEmPromo();
-    
-    //Atribuindo conteúdo para a div
-    nome.textContent = nomePrato;
-    valor.textContent = valorPreco;
-    botaoRemover.textContent = "Remover"
-
-    //Adicionando conteúdos na div
-    nomeEpreco.appendChild(nome);
-    nomeEpreco.appendChild(valor);
-    item.appendChild(nomeEpreco);
-    item.appendChild(botaoRemover);
-
-    //Função para inserir imagem
+    //Função responsável por inserir a imagem do hamburguer;
     function inserirImagem(){
         let img = document.createElement("img");
         img.src = "hamburger.png";
@@ -67,18 +78,82 @@ botaoSalvar.addEventListener("click", (e) => {
         item.appendChild(img);
     }
 
-    //Função para verificar se o item está em promoçao ou não
-    function estaEmPromo(){
-        
-        if(promo.checked){
-            //Se estiver em promoção diminua 20% do seu valor
-            valorPreco = `Preço: R$${preco.value-(20/100*preco.value)}`;
-            produtos.appendChild(item);
-            item.id = "em_promo";
-        }else if(semPromo.checked){
-            //Se não, o valor continua o mesmo e adicione-o antes daqueles em promoção
-            valorPreco = `Preço: R$${valorPreco}`;
-            produtos.prepend(item);
+    //Remove itens do container e do localStorage;
+    botaoRemover.addEventListener("click", () => {
+        produtos.removeChild(item);
+        for(let k=0;k<listaPrato.length;k++){
+            if(listaPrato[k]===prato&&listaPreco[k]===preco){
+                console.log(k);
+                listaPrato.splice(k, 1);
+                listaPreco.splice(k, 1);
+                listaPromocao.splice(k, 1);
+                
+                localStorage.setItem("prato", listaPrato);
+                localStorage.setItem("preço", listaPreco);
+                localStorage.setItem("promocao", listaPromocao);
+            }
+        }
+    });
+
+    //Chamada da função que confere se há promoção ou não no produto;
+    if(promocao==1){
+        precoFinal = conferePromocao(promocao, preco);
+        item.id = "em_promo";
+        produtos.appendChild(item);
+    }
+    else if(promocao==2){
+        precoFinal = conferePromocao(promocao, preco);
+        produtos.prepend(item);
+    }
+
+    //Atribui o nome e o preço do prato;
+    nome.textContent = prato;
+    valor.textContent = precoFinal;
+    
+    //Adiciona os elementos ao container;
+    nomeEpreco.appendChild(nome);
+    nomeEpreco.appendChild(valor);
+    item.appendChild(nomeEpreco);
+    item.appendChild(botaoRemover);
+}
+
+//Responsável por carregar os ítens armazenados dentro do localStorage;
+const carregarPagina = () =>{
+    if(localStorage.getItem("prato")){
+        let prato = localStorage.prato; 
+        prato = prato.split(',');
+        listaPrato = prato;
+    
+        let preco = localStorage.preço;
+        preco = preco.split(',');
+        listaPreco = preco;
+
+        let promocao = localStorage.promocao;
+        promocao = promocao.split(',');
+        listaPromocao = promocao;
+    
+        for(let k = 0;k < prato.length;k++){
+            criarElemento(prato[k], preco[k], promocao[k]);
         }
     }
-})
+}
+
+//Função responsável por ajustar o preço caso haja promoção ou não; 
+const conferePromocao = (promocao, preco) => {
+    let valorFinal;
+
+    if(promocao==1){
+        valorFinal = `Preço: R$${Number(preco)-(0.2*Number(preco))}`;
+
+        return valorFinal;
+    }
+    else if(promocao==2){
+        valorFinal = `Preço: R$${preco}`;
+
+        return valorFinal;
+    }
+}
+
+//Associação de eventos a página e ao botão;
+botaoSalvar.addEventListener("click", salvar);
+window.addEventListener("load", carregarPagina);
